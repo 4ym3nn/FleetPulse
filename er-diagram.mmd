@@ -1,8 +1,8 @@
 erDiagram
-    Users ||--|| CompanyBusiness : "has profile"
-    Users ||--|| TransportBusiness : "has profile"
-    CompanyBusiness ||--o{ Shipment : "creates"
-    TransportBusiness ||--o{ Shipment : "handles"
+    Users ||--|| Company : "has profile"
+    Users ||--|| Transport : "has profile"
+    Company ||--o{ Shipment : "creates"
+    Transport ||--o{ Shipment : "handles"
     Shipment ||--o{ TrackingEvent : "has"
     Shipment ||--o{ ShipmentItem : "contains"
     Users ||--o{ TrackingEvent : "creates"
@@ -17,7 +17,7 @@ erDiagram
         boolean is_active
     }
     
-    CompanyBusiness {
+    Company {
         int id PK
         int user_id FK UK "unique"
         string company_name
@@ -29,7 +29,7 @@ erDiagram
         datetime updated_at
     }
     
-    TransportBusiness {
+    Transport {
         int id PK
         int user_id FK UK "unique"
         string company_name
