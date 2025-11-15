@@ -1,0 +1,86 @@
+erDiagram
+    Users ||--|| CompanyBusiness : "has profile"
+    Users ||--|| TransportBusiness : "has profile"
+    CompanyBusiness ||--o{ Shipment : "creates"
+    TransportBusiness ||--o{ Shipment : "handles"
+    Shipment ||--o{ TrackingEvent : "has"
+    Shipment ||--o{ ShipmentItem : "contains"
+    Users ||--o{ TrackingEvent : "creates"
+    
+    Users {
+        int id PK
+        string email UK "unique"
+        string password_hash
+        enum user_type "company|transport"
+        datetime created_at
+        datetime updated_at
+        boolean is_active
+    }
+    
+    CompanyBusiness {
+        int id PK
+        int user_id FK UK "unique"
+        string company_name
+        string registration_number UK "unique"
+        string address
+        string phone
+        string contact_person
+        datetime created_at
+        datetime updated_at
+    }
+    
+    TransportBusiness {
+        int id PK
+        int user_id FK UK "unique"
+        string company_name
+        string registration_number UK "unique"
+        string fleet_size
+        string license_number UK "unique"
+        string address
+        string phone
+        string contact_person
+        datetime created_at
+        datetime updated_at
+    }
+    
+    Shipment {
+        int id PK
+        string tracking_number UK "unique"
+        int company_id FK "references CompanyBusiness"
+        int transport_id FK "references TransportBusiness"
+        string origin_address
+        string destination_address
+        datetime pickup_date
+        datetime estimated_delivery
+        datetime actual_delivery "nullable"
+        enum status "pending|accepted|in_transit|delivered|cancelled"
+        decimal total_weight "kg"
+        enum priority "low|medium|high"
+        text notes "nullable"
+        datetime created_at
+        datetime updated_at
+    }
+    
+    ShipmentItem {
+        int id PK
+        int shipment_id FK "references Shipment"
+        string item_name
+        string description "nullable"
+        int quantity
+        decimal weight "kg"
+        string unit "pieces|boxes|pallets"
+        decimal value "optional monetary value"
+        string sku "nullable"
+        datetime created_at
+    }
+    
+    TrackingEvent {
+        int id PK
+        int shipment_id FK "references Shipment"
+        enum event_type "created|accepted|picked_up|in_transit|delivered|cancelled|delayed"
+        string location
+        text description "nullable"
+        int created_by_user_id FK "references Users"
+        datetime event_timestamp
+        datetime created_at
+    }
