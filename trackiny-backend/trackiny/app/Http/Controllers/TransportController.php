@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Module\User;
-use Illuminate\Http\Request;
-use App\Module\Transport;
-use App\Module\Shipment;
+
+use App\Models\Shipment;
+
 class TransportController extends Controller
 {
    public function addShipment() {
