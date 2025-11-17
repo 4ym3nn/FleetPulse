@@ -7,17 +7,8 @@ use App\Module\Transport;
 use App\Module\Shipment;
 class TransportController extends Controller
 {
-    public function user():BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-    public function shipment():BelongsToMany
-    {
-        return $this->belongsToMany(Shipment::class);
-    }
-    public function addShipment() {
-        $shipment = $request->validate([
-        'tracking_number'      => 'required|string|unique:shipments,tracking_number',
+   public function addShipment() {
+        $shipment = request()->validate([
         'company_id'           => 'required|integer|exists:companies,id',
         'transport_id'         => 'required|integer|exists:transports,id',
         'origin_address'       => 'required|string',
