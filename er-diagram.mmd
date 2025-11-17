@@ -1,27 +1,27 @@
 erDiagram
-    Users ||--|| CompanyBusiness : "has profile"
-    Users ||--|| TransportBusiness : "has profile"
-    CompanyBusiness ||--o{ Shipment : "creates"
-    TransportBusiness ||--o{ Shipment : "handles"
+    Users ||--|| Company : "has profile"
+    Users ||--|| Transport : "has profile"
+    Company ||--o{ Shipment : "creates"
+    Transport ||--o{ Shipment : "handles"
     Shipment ||--o{ TrackingEvent : "has"
     Shipment ||--o{ ShipmentItem : "contains"
     Users ||--o{ TrackingEvent : "creates"
     
     Users {
         int id PK
-        string email UK "unique"
+        string email UK
         string password_hash
-        enum user_type "company|transport"
+        string user_type
         datetime created_at
         datetime updated_at
         boolean is_active
     }
     
-    CompanyBusiness {
+    Company {
         int id PK
-        int user_id FK UK "unique"
+        int user_id FK "UK"
         string company_name
-        string registration_number UK "unique"
+        string registration_number UK
         string address
         string phone
         string contact_person
@@ -29,13 +29,13 @@ erDiagram
         datetime updated_at
     }
     
-    TransportBusiness {
+    Transport {
         int id PK
-        int user_id FK UK "unique"
+        int user_id FK "UK"
         string company_name
-        string registration_number UK "unique"
+        string registration_number UK
         string fleet_size
-        string license_number UK "unique"
+        string license_number UK
         string address
         string phone
         string contact_person
@@ -45,42 +45,42 @@ erDiagram
     
     Shipment {
         int id PK
-        string tracking_number UK "unique"
-        int company_id FK "references CompanyBusiness"
-        int transport_id FK "references TransportBusiness"
+        string tracking_number UK
+        int company_id FK
+        int transport_id FK
         string origin_address
         string destination_address
         datetime pickup_date
         datetime estimated_delivery
-        datetime actual_delivery "nullable"
-        enum status "pending|accepted|in_transit|delivered|cancelled"
-        decimal total_weight "kg"
-        enum priority "low|medium|high"
-        text notes "nullable"
+        datetime actual_delivery
+        string status
+        decimal total_weight
+        string priority
+        text notes
         datetime created_at
         datetime updated_at
     }
     
     ShipmentItem {
         int id PK
-        int shipment_id FK "references Shipment"
+        int shipment_id FK
         string item_name
-        string description "nullable"
+        string description
         int quantity
-        decimal weight "kg"
-        string unit "pieces|boxes|pallets"
-        decimal value "optional monetary value"
-        string sku "nullable"
+        decimal weight
+        string unit
+        decimal value
+        string sku
         datetime created_at
     }
     
     TrackingEvent {
         int id PK
-        int shipment_id FK "references Shipment"
-        enum event_type "created|accepted|picked_up|in_transit|delivered|cancelled|delayed"
+        int shipment_id FK
+        string event_type
         string location
-        text description "nullable"
-        int created_by_user_id FK "references Users"
+        text description
+        int created_by_user_id FK
         datetime event_timestamp
         datetime created_at
     }
