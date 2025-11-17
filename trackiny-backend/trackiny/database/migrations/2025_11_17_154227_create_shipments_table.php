@@ -13,7 +13,7 @@ return new class extends Migration
     {
  Schema::create('shipments', function (Blueprint $table) {
     $table->id();
-    $table->string('tracking_number')->unique();
+    $table->uuid('tracking_number')->unique();
     $table->unsignedBigInteger('company_id');
     $table->unsignedBigInteger('transport_id');
     $table->string('origin_address');
