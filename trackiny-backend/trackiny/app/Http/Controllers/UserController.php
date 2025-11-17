@@ -7,9 +7,8 @@ use  App\Enums;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
-use app\models\Transport;
-use app\models\Company;
-
+use App\Models\Transport;
+use App\Models\Company;
 Enum UserType : string
 {
     case COMPANY='company';
@@ -17,15 +16,7 @@ Enum UserType : string
 }
 class UserController extends Controller
 {
-    public function transport():HasOne
-    {
-        return $this->hasOne(Transport::class);
-    }
-    public function company():HasOne
-    {
-        return $this->hasOne(Company::class);
-    }
-    public function isTransport(){
+   public function isTransport(){
         return $this->role === 'transport';
     }
      public function isCompany(){
@@ -37,7 +28,10 @@ class UserController extends Controller
             'password'=>['required']
         ]);
         if (auth()->attempt($incomingFields)) {
-            session->regenerate();
+            session()->regenerate();
+        return response()->json([
+            'message' => 'User logged in succesfully'
+        ],201);
         }
          else {
             return back()->withErrors(['email'=>'Invalid Credentials'])->onlyInput('email');
@@ -51,8 +45,33 @@ class UserController extends Controller
             'type'=>['required',Rule::enum(UserType::class)]
         ]);
         $incomingFields['password']=bcrypt($incomingFields['password']);
-       $user=  User::create($incomingFields);
-       auth()->login($user);
+        $user=  User::create($incomingFields);
+           if ($user->type === 'company') {
+            Company::create([
+                'user_id' => $user->id,
+                'company_name' => '',
+                'registration_number' => '',
+                'address' => '',
+                'phone' => '',
+                'contact_person' => ''
+            ]);
+        } elseif ($user->type === 'transport') {
+            Transport::create([
+                'user_id' => $user->id,
+                'company_name' => '',
+                'license_number' => '',
+                'fleet_size' => 0,
+                'registration_number' => '',
+                'address' => '',
+                'phone' => '',
+                'contact_person' => ''
+            ]);
+        }
+        auth()->login($user);
+        return response()->json([
+            'message' => 'User registered succesfully'
+        ],201);
+
 
     }
     function logout() {
