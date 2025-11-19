@@ -22,11 +22,5 @@ class TransportController extends Controller
     ]);
         return Shipment::create($shipment);
     }
-    public function getShipments() {
-        return Transport::find()->shipments;
-    }
-    public function getShipment(string $shipment_id) {
-        return Transport::find($shipment_id)->shipments;
-    }
 
 }
