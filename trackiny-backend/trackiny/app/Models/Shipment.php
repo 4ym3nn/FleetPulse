@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Model\ShipmentItem;
-use App\Model\Company;
-use App\Model\Transport;
+use App\Models\ShipmentItem;
+use App\Models\Company;
+use App\Models\Transport;
 class Shipment extends Model
 {
     protected $fillable = [
