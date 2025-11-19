@@ -7,7 +7,6 @@ import { Eye, EyeOff, Mail, Lock,User } from "lucide-react";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import {
   Form,
@@ -21,13 +20,13 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { UserState } from "@/lib/atom";
 import { useSetAtom } from "jotai";
+import { login } from "@/api/auth";
 
 
 
 const formSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email").max(50),
   password: z.string().min(1, "Password is required").max(50),
-  name: z.string().min(1, "Name is required").max(50),
 });
 
 const SignForm: React.FC = () => {
@@ -36,7 +35,6 @@ const SignForm: React.FC = () => {
     defaultValues: {
       email: "",
       password: "",
-      name: "",
     },
   });
 
@@ -53,18 +51,7 @@ const SignForm: React.FC = () => {
 
 
   const signInMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof formSchema>) => {
-      const payload = {
-        email: values.email,
-        // name: values.name,
-        password: values.password,
-        // type: userType,
-      };
-
-      const api = axios.create({ baseURL: "/api" });
-
-      return await api.post(`/login`, payload);
-    },
+    mutationFn:login,
     onSuccess: (response) => {
       const data = response.data;
       setUser(data.type);
@@ -111,27 +98,6 @@ const SignForm: React.FC = () => {
                 </button>
               ))}
             </div>
-
-            {/* Name Field */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                  <div className="relative">
-                      <User className="absolute left-3 top-3 text-gray-500" />
-                      <Input
-                        placeholder="Name"
-                        {...field}
-                        className="h-12 p-7 pl-10 text-lg rounded-xl w-full"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             {/* Email Field */}
             <FormField
