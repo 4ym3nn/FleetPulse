@@ -16,11 +16,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "src/components/ui/form";
-import { Input } from "src/components/ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import Googgle from "./google";
-import { UserState } from "src/lib/atom";
+import { UserState } from "@/lib/atom";
 import { useSetAtom } from "jotai";
 
 
@@ -193,7 +192,6 @@ const SignForm: React.FC = () => {
             >
               {signInMutation.isPending ? "Signing In..." : "Sign In"}
             </button>
-                            <Googgle />
 
             {/* Sign-up Redirect */}
             <p className="text-center">

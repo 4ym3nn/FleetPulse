@@ -8,8 +8,8 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "src/components/ui/form";
-import { Input } from "src/components/ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import axios from "axios";
 import Link from "next/link";
@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import Googgle from "./google";
 
 const formSchema = z
   .object({
